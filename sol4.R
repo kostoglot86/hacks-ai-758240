@@ -3,10 +3,10 @@ library(lightgbm)
 library(lubridate)
 library(caret)
 
-# Путь к папке с данными
+# пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 path_to_data = ''
 
-# Константы и параметры
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 exclude =  c(1,37)
 param_lgb = list(objective = "binary",
                 max_bin = 256,
@@ -18,30 +18,30 @@ param_lgb = list(objective = "binary",
                 bagging_freq = 1,
                 metric = "binary_logloss")
 
-# Чтение данных
+# пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 train = read.csv(paste0(path_to_data, "/train.csv"), header = T, fileEncoding = 'UTF-8')
 test = read.csv(paste0(path_to_data, "/test_dataset_test.csv", header = T, fileEncoding = 'UTF-8')
 target = train[c(34:39)]
 tr_te = rbind(train[c(1:33)],test)
 
-# Новые признаки
-tr_te$Время.засыпания = period_to_seconds(hms(tr_te$Время.засыпания))
-tr_te$Время.пробуждения = period_to_seconds(hms(tr_te$Время.пробуждения))
-tr_te$delta_sleep = ifelse(tr_te$Время.пробуждения - tr_te$Время.засыпания < 0, 
-                           24*3600 + tr_te$Время.пробуждения - tr_te$Время.засыпания, tr_te$Время.пробуждения - tr_te$Время.засыпания)
+# пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ = period_to_seconds(hms(tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ))
+tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ = period_to_seconds(hms(tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ))
+tr_te$delta_sleep = ifelse(tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ < 0, 
+                           24*3600 + tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - tr_te$пїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 for (i in c(as.numeric(which(sapply(tr_te, "class") == 'character')[-c(1)])))
   tr_te[,i] = as.numeric(as.factor(tr_te[,i]))
-tr_te$bad_time = ifelse(is.na(tr_te$Возраст.алког) == T, 0,tr_te$Возраст.алког) +
-  ifelse(is.na(tr_te$Возраст.курения) == T, 0,tr_te$Возраст.курения)
-tr_te$cig = tr_te$Возраст.курения * tr_te$Сигарет.в.день
+tr_te$bad_time = ifelse(is.na(tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅ) == T, 0,tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅ) +
+  ifelse(is.na(tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ) == T, 0,tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+tr_te$cig = tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ * tr_te$пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅ.пїЅпїЅпїЅпїЅ
 
-# Отделяем train и test
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ train пїЅ test
 train = tr_te[c(1:dim(train)[1]),]
 te = tr_te[c((dim(train)[1] + 1):(dim(tr_te)[1])),]
 
-# Формируем фолды для кросс-валидации
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 set.seed(13)
-train$fold <- createFolds(target$Артериальная.гипертензия, 1:nrow(train), k=5,list = FALSE)
+train$fold <- createFolds(target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 1:nrow(train), k=5,list = FALSE)
 fold.ids <- unique(train$fold)
 custom.folds <- vector("list", length(fold.ids))
 i <- 1
@@ -50,41 +50,41 @@ for( id in fold.ids){
   i <- i+1
 }
 
-# Для каждого таргета определяем оптимальное число итераций lgb с параметрами выше для минимизации logloss на CV
-dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Артериальная.гипертензия)
+# пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ lgb пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ logloss пїЅпїЅ CV
+dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 model_lgb1 = lgb.cv(data=dtrain, params = param_lgb, nrounds=10000, folds = custom.folds,
                     eval_freq = 100, early_stopping_rounds = 100)
 
-dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$ОНМК)
+dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅ)
 model_lgb2 = lgb.cv(data=dtrain, params = param_lgb, nrounds=10000, folds = custom.folds,
                     eval_freq = 100, early_stopping_rounds = 100)
 
-dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Стенокардия..ИБС..инфаркт.миокарда)
+dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 model_lgb3 = lgb.cv(data=dtrain, params = param_lgb, nrounds=10000, folds = custom.folds,
                     eval_freq = 100, early_stopping_rounds = 100)
 
-dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Сердечная.недостаточность)
+dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 model_lgb4 = lgb.cv(data=dtrain, params = param_lgb, nrounds=10000, folds = custom.folds,
                     eval_freq = 100, early_stopping_rounds = 100)
 
-dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Прочие.заболевания.сердца)
+dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ)
 model_lgb5 = lgb.cv(data=dtrain, params = param_lgb, nrounds=10000, folds = custom.folds,
                     eval_freq = 100, early_stopping_rounds = 100)
 
-# Зафиксировали оптимальное кол-во итераций для каждого таргета
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 NR1 = model_lgb1$best_iter
 NR2 = model_lgb2$best_iter
 NR3 = model_lgb3$best_iter
 NR4 = model_lgb4$best_iter
 NR5 = model_lgb5$best_iter
 
-# Для каждого таргета подбираем оптимальный трешхолд (шаг = 0.0001) для максимизации recall macro
+# пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ = 0.0001) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ recall macro
 res1 = c()  
 for (j in c(1:5)) { 
   dtrain <- lgb.Dataset(as.matrix(train[train$fold != j,][-c(exclude)]),
-                        label = target[train$fold != j,]$Артериальная.гипертензия)
+                        label = target[train$fold != j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   dtest <- lgb.Dataset(as.matrix(train[train$fold == j,][-c(exclude)]),
-                       label = target[train$fold == j,]$Артериальная.гипертензия)
+                       label = target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   valids = list(test = dtest)
   model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=NR1, bagging_seed = 13,
                          feature_fraction_seed=42, eval_freq = 100)
@@ -94,9 +94,9 @@ for (j in c(1:5)) {
   for (k in c(1:10000)) {
     pr_disc = ifelse(pr > k/10000, 1, 0)
     rec1 = sum(pr_disc == 1 & 
-                 target[train$fold == j,]$Артериальная.гипертензия == 1)/sum(target[train$fold == j,]$Артериальная.гипертензия == 1)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)
     rec0 = sum(pr_disc == 0 & 
-                 target[train$fold == j,]$Артериальная.гипертензия == 0)/sum(target[train$fold == j,]$Артериальная.гипертензия == 0)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)
     metric = 0.5*rec1 + 0.5*rec0
     res = rbind(res, data.frame(k = k/10000, metric = metric))
   }
@@ -108,9 +108,9 @@ res1 = res1 %>% group_by(k) %>% summarize(metric = mean(metric))
 res2 = c()  
 for (j in c(1:5)) { 
   dtrain <- lgb.Dataset(as.matrix(train[train$fold != j,][-c(exclude)]),
-                        label = target[train$fold != j,]$ОНМК)
+                        label = target[train$fold != j,]$пїЅпїЅпїЅпїЅ)
   dtest <- lgb.Dataset(as.matrix(train[train$fold == j,][-c(exclude)]),
-                       label = target[train$fold == j,]$ОНМК)
+                       label = target[train$fold == j,]$пїЅпїЅпїЅпїЅ)
   valids = list(test = dtest)
   model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=NR2, bagging_seed = 13,
                          feature_fraction_seed=42, eval_freq = 100)
@@ -120,9 +120,9 @@ for (j in c(1:5)) {
   for (k in c(1:10000)) {
     pr_disc = ifelse(pr > k/10000, 1, 0)
     rec1 = sum(pr_disc == 1 & 
-                 target[train$fold == j,]$ОНМК == 1)/sum(target[train$fold == j,]$ОНМК == 1)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅ == 1)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅ == 1)
     rec0 = sum(pr_disc == 0 & 
-                 target[train$fold == j,]$ОНМК == 0)/sum(target[train$fold == j,]$ОНМК == 0)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅ == 0)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅ == 0)
     metric = 0.5*rec1 + 0.5*rec0
     res = rbind(res, data.frame(k = k/10000, metric = metric))
   }
@@ -133,9 +133,9 @@ res2 = res2 %>% group_by(k) %>% summarize(metric = mean(metric))
 res3 = c()  
 for (j in c(1:5)) { 
   dtrain <- lgb.Dataset(as.matrix(train[train$fold != j,][-c(exclude)]),
-                        label = target[train$fold != j,]$Стенокардия..ИБС..инфаркт.миокарда)
+                        label = target[train$fold != j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   dtest <- lgb.Dataset(as.matrix(train[train$fold == j,][-c(exclude)]),
-                       label = target[train$fold == j,]$Стенокардия..ИБС..инфаркт.миокарда)
+                       label = target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   valids = list(test = dtest)
   model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=NR3, bagging_seed = 13,
                          feature_fraction_seed=42, eval_freq = 100)
@@ -145,9 +145,9 @@ for (j in c(1:5)) {
   for (k in c(1:10000)) {
     pr_disc = ifelse(pr > k/10000, 1, 0)
     rec1 = sum(pr_disc == 1 & 
-                 target[train$fold == j,]$Стенокардия..ИБС..инфаркт.миокарда == 1)/sum(target[train$fold == j,]$Стенокардия..ИБС..инфаркт.миокарда == 1)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)
     rec0 = sum(pr_disc == 0 & 
-                 target[train$fold == j,]$Стенокардия..ИБС..инфаркт.миокарда == 0)/sum(target[train$fold == j,]$Стенокардия..ИБС..инфаркт.миокарда == 0)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)
     metric = 0.5*rec1 + 0.5*rec0
     res = rbind(res, data.frame(k = k/10000, metric = metric))
   }
@@ -158,9 +158,9 @@ res3 = res3 %>% group_by(k) %>% summarize(metric = mean(metric))
 res4 = c()  
 for (j in c(1:5)) { 
   dtrain <- lgb.Dataset(as.matrix(train[train$fold != j,][-c(exclude)]),
-                        label = target[train$fold != j,]$Сердечная.недостаточность)
+                        label = target[train$fold != j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   dtest <- lgb.Dataset(as.matrix(train[train$fold == j,][-c(exclude)]),
-                       label = target[train$fold == j,]$Сердечная.недостаточность)
+                       label = target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   valids = list(test = dtest)
   model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=NR4, bagging_seed = 13,
                          feature_fraction_seed=42, eval_freq = 100)
@@ -170,9 +170,9 @@ for (j in c(1:5)) {
   for (k in c(1:10000)) {
     pr_disc = ifelse(pr > k/10000, 1, 0)
     rec1 = sum(pr_disc == 1 & 
-                 target[train$fold == j,]$Сердечная.недостаточность == 1)/sum(target[train$fold == j,]$Сердечная.недостаточность == 1)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 1)
     rec0 = sum(pr_disc == 0 & 
-                 target[train$fold == j,]$Сердечная.недостаточность == 0)/sum(target[train$fold == j,]$Сердечная.недостаточность == 0)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ == 0)
     metric = 0.5*rec1 + 0.5*rec0
     res = rbind(res, data.frame(k = k/10000, metric = metric))
   }
@@ -183,9 +183,9 @@ res4 = res4 %>% group_by(k) %>% summarize(metric = mean(metric))
 res5 = c()  
 for (j in c(1:5)) { 
   dtrain <- lgb.Dataset(as.matrix(train[train$fold != j,][-c(exclude)]),
-                        label = target[train$fold != j,]$Прочие.заболевания.сердца)
+                        label = target[train$fold != j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ)
   dtest <- lgb.Dataset(as.matrix(train[train$fold == j,][-c(exclude)]),
-                       label = target[train$fold == j,]$Прочие.заболевания.сердца)
+                       label = target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ)
   valids = list(test = dtest)
   model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=NR5, bagging_seed = 13,
                          feature_fraction_seed=42, eval_freq = 100)
@@ -195,9 +195,9 @@ for (j in c(1:5)) {
   for (k in c(1:10000)) {
     pr_disc = ifelse(pr > k/10000, 1, 0)
     rec1 = sum(pr_disc == 1 & 
-                 target[train$fold == j,]$Прочие.заболевания.сердца == 1)/sum(target[train$fold == j,]$Прочие.заболевания.сердца == 1)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ == 1)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ == 1)
     rec0 = sum(pr_disc == 0 & 
-                 target[train$fold == j,]$Прочие.заболевания.сердца == 0)/sum(target[train$fold == j,]$Прочие.заболевания.сердца == 0)
+                 target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ == 0)/sum(target[train$fold == j,]$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ == 0)
     metric = 0.5*rec1 + 0.5*rec0
     res = rbind(res, data.frame(k = k/10000, metric = metric))
   }
@@ -211,12 +211,12 @@ thresh = rbind(res1[which.max(res1$metric),],
                res4[which.max(res4$metric),],
                res5[which.max(res5$metric),])
 
-# оптимальный трешхолд и значение метрики
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 print(thresh)
-# кросс-вал скор целевой метрики
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 print(mean(thresh$metric))
 
-# Для каждого таргета прогоняем 10 итераций моделек и усредняем предикты
+# пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 10 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 pr_final1 = 0
 pr_final2 = 0
 pr_final3 = 0
@@ -226,19 +226,19 @@ ITERS = 10
 for (i in c(1:ITERS))
 {
   message(i)
-  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Артериальная.гипертензия)
+  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   model_lgb1 = lgb.train(data=dtrain, params = param_lgb, nrounds=NR1, bagging_seed = 13 + i, feature_fraction_seed = 42+i)
   pr1 = predict(model_lgb1, as.matrix(te[-c(exclude)]))
-  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$ОНМК)
+  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅ)
   model_lgb2 = lgb.train(data=dtrain, params = param_lgb, nrounds=NR2, bagging_seed = 13 + i, feature_fraction_seed = 42+i)
   pr2 = predict(model_lgb2, as.matrix(te[-c(exclude)]))
-  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Стенокардия..ИБС..инфаркт.миокарда)
+  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   model_lgb3 = lgb.train(data=dtrain, params = param_lgb, nrounds=NR3, bagging_seed = 13 + i, feature_fraction_seed = 42+i)
   pr3 = predict(model_lgb3, as.matrix(te[-c(exclude)]))
-  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Сердечная.недостаточность)
+  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   model_lgb4 = lgb.train(data=dtrain, params = param_lgb, nrounds=NR4, bagging_seed = 13 + i, feature_fraction_seed = 42+i)
   pr4 = predict(model_lgb4, as.matrix(te[-c(exclude)]))
-  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$Прочие.заболевания.сердца)
+  dtrain <- lgb.Dataset(as.matrix(train[-c(exclude)]),label = target$пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ)
   model_lgb5 = lgb.train(data=dtrain, params = param_lgb, nrounds=NR5, bagging_seed = 13 + i, feature_fraction_seed = 42+i)
   pr5 = predict(model_lgb5, as.matrix(te[-c(exclude)]))
   pr_final1 = pr_final1 + pr1
@@ -254,13 +254,13 @@ pr_all3 = pr_final3/ITERS
 pr_all4 = pr_final4/ITERS
 pr_all5 = pr_final5/ITERS
 
-# Формируем из предиктов бинарный ответ согласно получившимся ранее оптимальным трешхолдам
+# пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 sub4 = data.frame(ID = test$ID, 
-                  `Артериальная.гипертензия` = ifelse(pr_all1 > thresh$k[1], 1, 0),
-                  `ОНМК` = ifelse(pr_all2 > thresh$k[2], 1, 0),
-                  `Стенокардия..ИБС..инфаркт.миокарда` = ifelse(pr_all3 > thresh$k[3], 1, 0),
-                  `Сердечная.недостаточность` = ifelse(pr_all4 > thresh$k[4], 1, 0),
-                  `Прочие.заболевания.сердца` = ifelse(pr_all5 > thresh$k[5], 1, 0))
+                  `пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ` = ifelse(pr_all1 > thresh$k[1], 1, 0),
+                  `пїЅпїЅпїЅпїЅ` = ifelse(pr_all2 > thresh$k[2], 1, 0),
+                  `пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..пїЅпїЅпїЅ..пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ` = ifelse(pr_all3 > thresh$k[3], 1, 0),
+                  `пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ` = ifelse(pr_all4 > thresh$k[4], 1, 0),
+                  `пїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ` = ifelse(pr_all5 > thresh$k[5], 1, 0))
 
-# Пишем файлик решения
+# пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 write.csv(sub4, paste0(path_to_data, "/sub4.csv", row.names = F, quote = F)
