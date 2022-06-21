@@ -2,12 +2,14 @@ R version 4.0.3 (2020-10-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 19041)
 Matrix products: default
+
 locale:
 LC_COLLATE=Russian_Russia.1251  
 LC_CTYPE=Russian_Russia.1251    
 LC_MONETARY=Russian_Russia.1251
 LC_NUMERIC=C                   
 LC_TIME=Russian_Russia.1251    
+
 attached base packages:
 stats     
 graphics  
@@ -16,6 +18,7 @@ utils
 datasets  
 methods   
 base     
+
 other attached packages:
 caret_6.0-86      
 lattice_0.20-41   
