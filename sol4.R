@@ -20,7 +20,7 @@ param_lgb = list(objective = "binary",
 
 # Чтение данных
 train = read.csv(paste0(path_to_data, "/train.csv"), header = T, fileEncoding = 'UTF-8')
-test = read.csv(paste0(path_to_data, "/test_dataset_test.csv", header = T, fileEncoding = 'UTF-8')
+test = read.csv(paste0(path_to_data, "/test_dataset_test.csv"), header = T, fileEncoding = 'UTF-8')
 target = train[c(34:39)]
 tr_te = rbind(train[c(1:33)],test)
 
