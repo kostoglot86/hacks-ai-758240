@@ -14,7 +14,6 @@ LC_NUMERIC=C
 LC_TIME=Russian_Russia.1251    
 
 attached base packages:
-
 stats     
 graphics  
 grDevices 
@@ -24,7 +23,6 @@ methods
 base     
 
 other attached packages:
-
 caret_6.0-86      
 lattice_0.20-41   
 lubridate_1.7.9.2 
