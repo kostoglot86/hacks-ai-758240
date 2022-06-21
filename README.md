@@ -1,19 +1,16 @@
-R version 4.0.3 (2020-10-10)
+R version 4.0.3 (2020-10-10)<br/>
+Platform: x86_64-w64-mingw32/x64 (64-bit)<br/>
+Running under: Windows 10 x64 (build 19041)<br/>
+Matrix products: default<br/>
 
-Platform: x86_64-w64-mingw32/x64 (64-bit)
-
-Running under: Windows 10 x64 (build 19041)
-
-Matrix products: default
-
-locale:
+locale:<br/>
 LC_COLLATE=Russian_Russia.1251  
 LC_CTYPE=Russian_Russia.1251    
 LC_MONETARY=Russian_Russia.1251
 LC_NUMERIC=C                   
 LC_TIME=Russian_Russia.1251    
 
-attached base packages:
+attached base packages:<br/>
 stats     
 graphics  
 grDevices 
@@ -22,7 +19,7 @@ datasets
 methods   
 base     
 
-other attached packages:
+other attached packages:<br/>
 caret_6.0-86      
 lattice_0.20-41   
 lubridate_1.7.9.2 
